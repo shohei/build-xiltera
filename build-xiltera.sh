@@ -3,8 +3,8 @@
 repo init -u git://github.com/aquaxis/xiltera-bsp-platform.git
 repo sync
 
-mkdir -p poky/buld
-cp -R conf poky/build
+mkdir -p poky/build/conf
+cp -R conf/* poky/build/conf
 
 cd poky
 
