@@ -11,8 +11,6 @@ git ckechout 31ade3b83e1821da5fbb2f11b5b3d4ab2ec39db8
 
 patch -p1 < ../files/linux-kernel.4.4.diff
 
-cp ../files/xiltera_defconfig arch/arm/configs/
-
 make xiltera_defconfig
 make zImage
 make zynq-zybo.dtb
