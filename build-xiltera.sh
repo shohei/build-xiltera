@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mkdir build
+mkdir -p build
 
 repo init -u git://github.com/aquaxis/xiltera-bsp-platform.git
 repo sync
