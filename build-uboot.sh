@@ -20,6 +20,8 @@ cp u-boot-dtb.img ../build/de1soc.u-boot-dtb.img
 
 make clean
 
+cp ../files/ps7_init* board/xilinx/zynq/custom_hw_platform/
+
 make zynq_zybo_defconfig
 make
 
