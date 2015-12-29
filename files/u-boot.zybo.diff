@@ -1,0 +1,78 @@
+diff --git a/include/configs/socfpga_sockit.h b/include/configs/socfpga_sockit.h
+index 6c71ef4..bccf9a8 100644
+--- a/include/configs/socfpga_sockit.h
++++ b/include/configs/socfpga_sockit.h
+@@ -41,7 +41,7 @@
+ #ifdef CONFIG_SOCFPGA_VIRTUAL_TARGET
+ #define CONFIG_BOOTCOMMAND	"run ramboot"
+ #else
+-#define CONFIG_BOOTCOMMAND	"run mmcload; run mmcboot"
++#define CONFIG_BOOTCOMMAND	"run fpgalaod; run fpgaboot; run mmcload; run mmcboot"
+ #endif
+ #define CONFIG_LOADADDR		0x01000000
+ #define CONFIG_SYS_LOAD_ADDR	CONFIG_LOADADDR
+@@ -73,6 +73,8 @@
+ #define CONFIG_HOSTNAME		socfpga_sockit
+ 
+ #define CONFIG_EXTRA_ENV_SETTINGS \
++	"fpgaload=load mmc 0 0x1000000 soc_system.rbf\0 " \
++	"fpgaboot=fpga load 0 0x1000000 $filesize\0 " \
+ 	"verify=n\0" \
+ 	"loadaddr= " __stringify(CONFIG_SYS_LOAD_ADDR) "\0" \
+ 	"ramboot=setenv bootargs " CONFIG_BOOTARGS ";" \
+diff --git a/include/configs/zynq-common.h b/include/configs/zynq-common.h
+index e7ab50a..c3efe1e 100644
+--- a/include/configs/zynq-common.h
++++ b/include/configs/zynq-common.h
+@@ -158,6 +158,7 @@
+ #endif
+ 
+ #if defined(CONFIG_ZYNQ_SDHCI) || defined(CONFIG_ZYNQ_USB)
++# define CONFIG_CMD_BOOTZ
+ # define CONFIG_SUPPORT_VFAT
+ # define CONFIG_CMD_FAT
+ # define CONFIG_CMD_EXT2
+@@ -207,30 +208,21 @@
+ 
+ /* Default environment */
+ #define CONFIG_EXTRA_ENV_SETTINGS	\
+-	"fit_image=fit.itb\0"		\
+-	"load_addr=0x2000000\0"		\
+-	"fit_size=0x800000\0"		\
+-	"flash_off=0x100000\0"		\
+-	"nor_flash_off=0xE2100000\0"	\
+-	"fdt_high=0x20000000\0"		\
+-	"initrd_high=0x20000000\0"	\
+-	"norboot=echo Copying FIT from NOR flash to RAM... && " \
+-		"cp.b ${nor_flash_off} ${load_addr} ${fit_size} && " \
+-		"bootm ${load_addr}\0" \
+-	"sdboot=echo Copying FIT from SD to RAM... && " \
+-		"load mmc 0 ${load_addr} ${fit_image} && " \
+-		"bootm ${load_addr}\0" \
+-	"jtagboot=echo TFTPing FIT to RAM... && " \
+-		"tftpboot ${load_addr} ${fit_image} && " \
+-		"bootm ${load_addr}\0" \
+-	"usbboot=if usb start; then " \
+-			"echo Copying FIT from USB to RAM... && " \
+-			"load usb 0 ${load_addr} ${fit_image} && " \
+-			"bootm ${load_addr}\0" \
+-		"fi\0" \
++"fpgaload=load mmc 0 0x1000000 ZYBO_wrapper.bit\0 " \
++"fpgaboot=fpga loadb 0 0x1000000 $filesize\0 " \
++"bootimage=zImage\0" \
++"fdtaddr=0x00000100\0" \
++"fdtimage=zynq-zybo.dtb\0" \
++"loadaddr=0x8000\0" \
++"mmcloadcmd=fatload\0" \
++"mmcloadpart=1\0" \
++"mmcroot=/dev/mmcblk0p2\0" \
++"mmcboot=setenv bootargs console=ttyPS0,115200 root=${mmcroot} rw rootwait uio_pdrv_genirq.of_id=generic-uio;bootz ${loadaddr} - ${fdtaddr}\0" \
++"mmcload=mmc rescan;fatload mmc 0:1 ${loadaddr} ${bootimage};fatload mmc 0:1 ${fdtaddr} ${fdtimage}\0" \
+ 		DFU_ALT_INFO
+ 
+-#define CONFIG_BOOTCOMMAND		"run $modeboot"
++/* #define CONFIG_BOOTCOMMAND		"run $modeboot"*/
++#define CONFIG_BOOTCOMMAND		"run fpgaload; run fpgaboot; run mmcload; run mmcboot"
+ #define CONFIG_BOOTDELAY		3 /* -1 to Disable autoboot */
+ #define CONFIG_SYS_LOAD_ADDR		0 /* default? */
+ 

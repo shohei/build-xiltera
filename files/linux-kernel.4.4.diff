@@ -1,0 +1,874 @@
+diff --git a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
+index 39c470e..6a4de91 100644
+--- a/arch/arm/boot/dts/socfpga.dtsi
++++ b/arch/arm/boot/dts/socfpga.dtsi
+@@ -633,7 +633,7 @@
+ 			reg = <0xffc05000 0x1000>;
+ 			clocks = <&l4_sp_clk>;
+ 			interrupts = <0 159 0x4>;
+-			status = "disabled";
++			status = "okay";
+ 		};
+ 
+ 		i2c2: i2c@ffc06000 {
+diff --git a/arch/arm/boot/dts/socfpga_cyclone5_sockit.dts b/arch/arm/boot/dts/socfpga_cyclone5_sockit.dts
+index 48bf651..e4a9c19 100644
+--- a/arch/arm/boot/dts/socfpga_cyclone5_sockit.dts
++++ b/arch/arm/boot/dts/socfpga_cyclone5_sockit.dts
+@@ -45,6 +45,20 @@
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
+ 	};
++
++};
++
++/ {
++	soc {
++		aq-fb@ff200000 {
++			compatible = "aquaxis,framebuffer";
++			reg = <0xff200000 0x10000>;
++			width = <1280>;
++			height = <1024>;
++			stride = <(1280 * 4)>;
++			format = "a8r8g8b8";
++		};
++	};
+ };
+ 
+ &gmac1 {
+diff --git a/arch/arm/boot/dts/zynq-zybo.dts b/arch/arm/boot/dts/zynq-zybo.dts
+index 16c9cac..b457630 100644
+--- a/arch/arm/boot/dts/zynq-zybo.dts
++++ b/arch/arm/boot/dts/zynq-zybo.dts
+@@ -33,10 +33,28 @@
+ 		stdout-path = "serial0:115200n8";
+ 	};
+ 
++	amba: amba {
++		aq-fb@40000000 {
++			compatible = "aquaxis,framebuffer";
++			reg = <0x40000000 0x10000>;
++			width = <1280>;
++			height = <1024>;
++			stride = <(1280 * 4)>;
++			format = "a8r8g8b8";
++		};
++		
++		uio@40010000 {
++			compatible = "generic-uio";
++			reg = <0x40010000 0x10000>;
++			interrupt-parent = <0x3>;
++			interrupts = <0x0 0x1d 0x4>;
++		};
++	};
+ };
+ 
+ &clkc {
+ 	ps-clk-frequency = <50000000>;
++	fclk-enable = <0xf>;
+ };
+ 
+ &gem0 {
+@@ -56,3 +74,7 @@
+ &uart1 {
+ 	status = "okay";
+ };
++
++
++
++
+diff --git a/arch/arm/configs/xiltera_defconfig b/arch/arm/configs/xiltera_defconfig
+new file mode 100644
+index 0000000..30d9a4b
+--- /dev/null
++++ b/arch/arm/configs/xiltera_defconfig
+@@ -0,0 +1,276 @@
++CONFIG_LOCALVERSION="-xilinx"
++CONFIG_SYSVIPC=y
++CONFIG_FHANDLE=y
++CONFIG_NO_HZ=y
++CONFIG_HIGH_RES_TIMERS=y
++CONFIG_IKCONFIG=y
++CONFIG_IKCONFIG_PROC=y
++CONFIG_LOG_BUF_SHIFT=14
++CONFIG_CGROUPS=y
++CONFIG_CPUSETS=y
++CONFIG_NAMESPACES=y
++CONFIG_BLK_DEV_INITRD=y
++CONFIG_CC_OPTIMIZE_FOR_SIZE=y
++CONFIG_SYSCTL_SYSCALL=y
++CONFIG_EMBEDDED=y
++CONFIG_PROFILING=y
++CONFIG_OPROFILE=y
++CONFIG_PERF_EVENTS=y
++CONFIG_SLAB=y
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODULE_FORCE_UNLOAD=y
++CONFIG_MODVERSIONS=y
++# CONFIG_BLK_DEV_BSG is not set
++CONFIG_ARCH_SOCFPGA=y
++CONFIG_ARM_THUMBEE=y
++CONFIG_ARCH_VEXPRESS=y
++CONFIG_ARCH_ZYNQ=y
++CONFIG_PL310_ERRATA_588369=y
++CONFIG_PL310_ERRATA_727915=y
++CONFIG_PL310_ERRATA_769419=y
++CONFIG_ARM_ERRATA_754322=y
++CONFIG_ARM_ERRATA_754327=y
++CONFIG_ARM_ERRATA_764369=y
++CONFIG_ARM_ERRATA_775420=y
++CONFIG_PCI=y
++CONFIG_PCI_MSI=y
++CONFIG_PCI_REALLOC_ENABLE_AUTO=y
++CONFIG_PCIE_XILINX=y
++CONFIG_SMP=y
++CONFIG_NR_CPUS=2
++CONFIG_SCHED_MC=y
++CONFIG_SCHED_SMT=y
++CONFIG_PREEMPT=y
++CONFIG_AEABI=y
++CONFIG_HIGHMEM=y
++# CONFIG_COMPACTION is not set
++CONFIG_CMA=y
++CONFIG_ZBOOT_ROM_TEXT=0x0
++CONFIG_ZBOOT_ROM_BSS=0x0
++CONFIG_CMDLINE="console=ttyPS0,115200n8 root=/dev/ram rw initrd=0x00800000,16M earlyprintk mtdparts=physmap-flash.0:512K(nor-fsbl),512K(nor-u-boot),5M(nor-linux),9M(nor-user),1M(nor-scratch),-(nor-rootfs)"
++CONFIG_CPU_FREQ=y
++CONFIG_CPU_FREQ_STAT_DETAILS=y
++CONFIG_CPU_FREQ_DEFAULT_GOV_USERSPACE=y
++CONFIG_CPU_FREQ_GOV_PERFORMANCE=y
++CONFIG_CPU_FREQ_GOV_POWERSAVE=y
++CONFIG_CPU_FREQ_GOV_ONDEMAND=y
++CONFIG_CPU_FREQ_GOV_CONSERVATIVE=y
++CONFIG_CPU_IDLE=y
++CONFIG_ARM_ZYNQ_CPUIDLE=y
++CONFIG_VFP=y
++CONFIG_NEON=y
++# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_DHCP=y
++CONFIG_IP_PNP_BOOTP=y
++CONFIG_IP_PNP_RARP=y
++CONFIG_IPV6=y
++CONFIG_NETWORK_PHY_TIMESTAMPING=y
++CONFIG_NET_IPIP=m
++CONFIG_VLAN_8021Q=m
++CONFIG_VLAN_8021Q=y
++CONFIG_VLAN_8021Q_GVRP=y
++CONFIG_CAN=y
++CONFIG_CAN_C_CAN=y
++CONFIG_CAN_C_CAN_PLATFORM=y
++CONFIG_CAN_DEBUG_DEVICES=y
++CONFIG_CAN_XILINXCAN=y
++CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
++CONFIG_DEVTMPFS=y
++CONFIG_DEVTMPFS_MOUNT=y
++CONFIG_DMA_CMA=y
++CONFIG_CONNECTOR=y
++CONFIG_MTD=y
++CONFIG_MTD_CMDLINE_PARTS=y
++CONFIG_MTD_BLOCK=y
++CONFIG_MTD_CFI=y
++CONFIG_MTD_CFI_AMDSTD=y
++CONFIG_MTD_PHYSMAP=y
++CONFIG_MTD_PHYSMAP_OF=y
++CONFIG_MTD_M25P80=y
++CONFIG_MTD_NAND=y
++CONFIG_MTD_NAND_PL35X=y
++CONFIG_MTD_SPI_NOR=y
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_RAM=y
++CONFIG_BLK_DEV_RAM_COUNT=2
++CONFIG_BLK_DEV_RAM_SIZE=16384
++CONFIG_SRAM=y
++CONFIG_XILINX_TRAFGEN=y
++CONFIG_EEPROM_AT24=y
++CONFIG_EEPROM_AT25=y
++CONFIG_SCSI=y
++CONFIG_BLK_DEV_SD=y
++CONFIG_CHR_DEV_SG=y
++CONFIG_NETDEVICES=y
++CONFIG_STMMAC_ETH=y
++CONFIG_DWMAC_SOCFPGA=y
++CONFIG_MICREL_PHY=y
++CONFIG_MACB=y
++CONFIG_E1000E=y
++CONFIG_R8169=y
++CONFIG_XILINX_EMACLITE=y
++CONFIG_XILINX_AXI_EMAC=y
++CONFIG_XILINX_PS_EMAC=y
++CONFIG_MARVELL_PHY=y
++CONFIG_VITESSE_PHY=y
++CONFIG_MDIO_BITBANG=y
++CONFIG_INPUT_SPARSEKMAP=y
++CONFIG_INPUT_EVDEV=y
++CONFIG_KEYBOARD_GPIO=y
++CONFIG_KEYBOARD_GPIO_POLLED=y
++CONFIG_SERIAL_XILINX_PS_UART=y
++CONFIG_SERIAL_XILINX_PS_UART_CONSOLE=y
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_SERIAL_8250_NR_UARTS=2
++CONFIG_SERIAL_8250_RUNTIME_UARTS=2
++CONFIG_SERIAL_8250_DW=y
++CONFIG_XILINX_DEVCFG=y
++CONFIG_SERIO_AMBAKMI=y
++CONFIG_LEGACY_PTY_COUNT=16
++CONFIG_I2C=y
++CONFIG_I2C_CHARDEV=y
++CONFIG_I2C_DESIGNWARE_PLATFORM=y
++CONFIG_I2C_MUX=y
++CONFIG_I2C_MUX_PCA954x=y
++CONFIG_I2C_CADENCE=y
++CONFIG_SPI=y
++CONFIG_SPI_CADENCE=y
++CONFIG_SPI_XILINX=y
++CONFIG_SPI_ZYNQ_QSPI=y
++CONFIG_GPIOLIB=y
++CONFIG_GPIO_SYSFS=y
++CONFIG_GPIO_ZYNQ=y
++CONFIG_GPIO_DWAPB=y
++CONFIG_PMBUS=y
++CONFIG_SENSORS_LTC2978=y
++CONFIG_SENSORS_LTC2978_REGULATOR=y
++CONFIG_SENSORS_UCD9000=y
++CONFIG_SENSORS_UCD9200=y
++CONFIG_THERMAL=y
++CONFIG_CPU_THERMAL=y
++CONFIG_WATCHDOG=y
++CONFIG_DW_WATCHDOG=y
++CONFIG_XILINX_WATCHDOG=y
++CONFIG_CADENCE_WATCHDOG=y
++CONFIG_REGULATOR=y
++CONFIG_REGULATOR_FIXED_VOLTAGE=y
++CONFIG_MEDIA_SUPPORT=y
++CONFIG_MEDIA_CAMERA_SUPPORT=y
++CONFIG_MEDIA_CONTROLLER=y
++CONFIG_VIDEO_V4L2_SUBDEV_API=y
++CONFIG_V4L_PLATFORM_DRIVERS=y
++CONFIG_VIDEO_XILINX=y
++CONFIG_VIDEO_XILINX_CFA=y
++CONFIG_VIDEO_XILINX_CRESAMPLE=y
++CONFIG_VIDEO_XILINX_REMAPPER=y
++CONFIG_VIDEO_XILINX_RGB2YUV=y
++CONFIG_VIDEO_XILINX_SCALER=y
++CONFIG_VIDEO_XILINX_SWITCH=y
++CONFIG_VIDEO_XILINX_TPG=y
++# CONFIG_MEDIA_SUBDRV_AUTOSELECT is not set
++CONFIG_VIDEO_ADV7604=y
++# CONFIG_DVB_TUNER_DIB0070 is not set
++# CONFIG_DVB_TUNER_DIB0090 is not set
++CONFIG_DRM=y
++CONFIG_DRM_XILINX=y
++CONFIG_FRAMEBUFFER_CONSOLE=y
++CONFIG_SOUND=y
++CONFIG_SND=y
++CONFIG_SND_SOC=y
++CONFIG_SND_SOC_ADI=y
++CONFIG_SND_SOC_ADI_AXI_I2S=y
++CONFIG_SND_SOC_ADI_AXI_SPDIF=y
++CONFIG_HID_MICROSOFT=y
++CONFIG_USB=y
++CONFIG_USB_DWC2=y
++CONFIG_USB_DWC2_HOST=y
++CONFIG_USB_OTG=y
++CONFIG_USB_EHCI_HCD=y
++# CONFIG_USB_EHCI_TT_NEWSCHED is not set
++CONFIG_USB_STORAGE=y
++CONFIG_USB_CHIPIDEA=y
++CONFIG_USB_CHIPIDEA_UDC=y
++CONFIG_USB_CHIPIDEA_HOST=y
++CONFIG_NOP_USB_XCEIV=y
++CONFIG_USB_GADGET=y
++CONFIG_USB_GADGET_XILINX=y
++CONFIG_USB_ZERO=m
++CONFIG_MMC=y
++CONFIG_MMC_DW=y
++CONFIG_MMC_SDHCI=y
++CONFIG_MMC_SDHCI_PLTFM=y
++CONFIG_MMC_SDHCI_OF_ARASAN=y
++CONFIG_NEW_LEDS=y
++CONFIG_LEDS_CLASS=y
++CONFIG_LEDS_GPIO=y
++CONFIG_LEDS_TRIGGERS=y
++CONFIG_LEDS_TRIGGER_TIMER=y
++CONFIG_LEDS_TRIGGER_ONESHOT=y
++CONFIG_LEDS_TRIGGER_HEARTBEAT=y
++CONFIG_LEDS_TRIGGER_BACKLIGHT=y
++CONFIG_LEDS_TRIGGER_CPU=y
++CONFIG_LEDS_TRIGGER_GPIO=y
++CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
++CONFIG_LEDS_TRIGGER_TRANSIENT=y
++CONFIG_LEDS_TRIGGER_CAMERA=y
++CONFIG_EDAC=y
++CONFIG_EDAC_MM_EDAC=y
++CONFIG_EDAC_ZYNQ=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_PCF8563=y
++CONFIG_DMADEVICES=y
++CONFIG_PL330_DMA=y
++CONFIG_XILINX_DMA_ENGINES=y
++CONFIG_XILINX_AXIDMA=y
++CONFIG_XILINX_AXICDMA=y
++CONFIG_XILINX_VDMA=y
++CONFIG_UIO=y
++CONFIG_UIO_PDRV_GENIRQ=y
++CONFIG_UIO_XILINX_APM=y
++CONFIG_COMMON_CLK_SI570=y
++CONFIG_MEMORY=y
++CONFIG_IIO=y
++CONFIG_XILINX_XADC=y
++CONFIG_EXT2_FS=y
++CONFIG_EXT2_FS_XATTR=y
++CONFIG_EXT2_FS_POSIX_ACL=y
++CONFIG_EXT3_FS=y
++# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
++CONFIG_EXT4_FS=y
++# CONFIG_DNOTIFY is not set
++CONFIG_MSDOS_FS=y
++CONFIG_VFAT_FS=y
++CONFIG_NTFS_FS=y
++CONFIG_NTFS_RW=y
++CONFIG_TMPFS=y
++CONFIG_CONFIGFS_FS=y
++CONFIG_JFFS2_FS=y
++CONFIG_JFFS2_SUMMARY=y
++CONFIG_NFS_FS=y
++CONFIG_ROOT_NFS=y
++CONFIG_NLS_CODEPAGE_437=y
++CONFIG_NLS_ASCII=y
++CONFIG_NLS_ISO8859_1=y
++CONFIG_PRINTK_TIME=y
++CONFIG_DEBUG_INFO=y
++CONFIG_MAGIC_SYSRQ=y
++CONFIG_DETECT_HUNG_TASK=y
++# CONFIG_SCHED_DEBUG is not set
++CONFIG_TIMER_STATS=y
++# CONFIG_DEBUG_PREEMPT is not set
++CONFIG_RCU_CPU_STALL_TIMEOUT=60
++# CONFIG_FTRACE is not set
++CONFIG_FONTS=y
++CONFIG_FONT_8x8=y
++CONFIG_FONT_8x16=y
++CONFIG_ENABLE_DEFAULT_TRACERS=y
++CONFIG_DEBUG_USER=y
++CONFIG_XZ_DEC=y
+diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+index e6d16d6..9c8a221 100644
+--- a/drivers/video/fbdev/Kconfig
++++ b/drivers/video/fbdev/Kconfig
+@@ -2492,3 +2492,12 @@ config FB_SM712
+ 	  This driver is also available as a module. The module will be
+ 	  called sm712fb. If you want to compile it as a module, say M
+ 	  here and read <file:Documentation/kbuild/modules.txt>.
++
++config FB_AQUAXIS
++	tristate "AQUAXIS framebuffer support"
++	depends on FB
++	select FB_CFB_FILLRECT
++	select FB_CFB_COPYAREA
++	select FB_CFB_IMAGEBLIT
++	help
++	  AQUAXIS Frame Buffer.
+diff --git a/drivers/video/fbdev/Makefile b/drivers/video/fbdev/Makefile
+index 50ed1b4..5fe0b41 100644
+--- a/drivers/video/fbdev/Makefile
++++ b/drivers/video/fbdev/Makefile
+@@ -150,5 +150,8 @@ obj-$(CONFIG_FB_MXS)		  += mxsfb.o
+ obj-$(CONFIG_FB_SSD1307)	  += ssd1307fb.o
+ obj-$(CONFIG_FB_SIMPLE)           += simplefb.o
+ 
++# AQUAXIS
++obj-$(CONFIG_FB_AQUAXIS) += aqfb.o
++
+ # the test framebuffer is last
+ obj-$(CONFIG_FB_VIRTUAL)          += vfb.o
+diff --git a/drivers/video/fbdev/aqfb.c b/drivers/video/fbdev/aqfb.c
+new file mode 100644
+index 0000000..027d721
+--- /dev/null
++++ b/drivers/video/fbdev/aqfb.c
+@@ -0,0 +1,407 @@
++/*
++ * Simplest possible simple frame-buffer driver, as a platform device
++ *
++ * Copyright (c) 2013, Stephen Warren
++ *
++ * Based on q40fb.c, which was:
++ * Copyright (C) 2001 Richard Zidlicky <rz@linux-m68k.org>
++ *
++ * Also based on offb.c, which was:
++ * Copyright (C) 1997 Geert Uytterhoeven
++ * Copyright (C) 1996 Paul Mackerras
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ */
++
++#include <linux/errno.h>
++#include <linux/fb.h>
++#include <linux/io.h>
++#include <linux/module.h>
++#include <linux/cdev.h>
++#include <linux/platform_data/aqfb.h>
++#include <linux/platform_device.h>
++#include <linux/dma-mapping.h>
++#include <linux/slab.h>
++#include <linux/genalloc.h>
++
++#define DRIVER_NAME "aqfb"
++
++// DMA
++#define WR_START (0x00)
++#define WR_ADRS  (0x04)
++#define WR_LEN   (0x08)
++#define RD_START (0x0C)
++#define RD_ADRS  (0x10)
++#define RD_LEN   (0x14)
++#define STATUS   (0x18)
++#define TEST     (0x1C)
++#define TESTRST  (0x20)
++#define DEBUG    (0x24)
++#define FSTATUS0 (0x28)
++#define FSTATUS1 (0x2C)
++#define FSTATUS2 (0x30)
++#define FSTATUS3 (0x34)
++
++int aqfb_major    = 0; // major number (dynamically allocated in probe)
++int aqfb_minor    = 0; // minor number (zero fixed)
++int aqfb_nr_devs  = 1; // only one device node is supported.
++
++static struct fb_fix_screeninfo aqfb_fix = {
++	.id		= "aqfb",
++	.type		= FB_TYPE_PACKED_PIXELS,
++	.visual		= FB_VISUAL_TRUECOLOR,
++	.accel		= FB_ACCEL_NONE,
++};
++
++static struct fb_var_screeninfo aqfb_var = {
++	.height		= -1,
++	.width		= -1,
++	.activate	= FB_ACTIVATE_NOW,
++	.vmode		= FB_VMODE_NONINTERLACED,
++};
++
++struct aqfb_local {
++  int irq;
++  unsigned long mem_start;
++  unsigned long mem_end;
++  void __iomem *base_addr;
++  struct cdev cdev;
++  struct device *dev;
++};
++
++// file operation object
++struct file_operations aqfb_fops = {
++#if 0
++  .owner          = THIS_MODULE,
++  .unlocked_ioctl = aqfb_ioctl,
++  .read           = aqfb_read,
++  .write          = aqfb_write,
++  .llseek         = aqfb_llseek,
++  .open           = aqfb_open,
++  .release        = aqfb_release,
++#endif
++};
++
++static int aqfb_setcolreg(u_int regno, u_int red, u_int green, u_int blue,
++			      u_int transp, struct fb_info *info)
++{
++	u32 *pal = info->pseudo_palette;
++	u32 cr = red >> (16 - info->var.red.length);
++	u32 cg = green >> (16 - info->var.green.length);
++	u32 cb = blue >> (16 - info->var.blue.length);
++	u32 value;
++
++	if (regno >= 16)
++		return -EINVAL;
++
++	value = (cr << info->var.red.offset) |
++		(cg << info->var.green.offset) |
++		(cb << info->var.blue.offset);
++	if (info->var.transp.length > 0) {
++		u32 mask = (1 << info->var.transp.length) - 1;
++		mask <<= info->var.transp.offset;
++		value |= mask;
++	}
++	pal[regno] = value;
++
++	return 0;
++}
++
++static void aqfb_destroy(struct fb_info *info)
++{
++#if 1
++	if (info->screen_base)
++		iounmap(info->screen_base);
++#endif
++}
++
++static struct fb_ops aqfb_ops = {
++	.owner		    = THIS_MODULE,
++	.fb_destroy	  = aqfb_destroy,
++	.fb_setcolreg	= aqfb_setcolreg,
++#if 1
++	.fb_fillrect	= cfb_fillrect,
++	.fb_copyarea	= cfb_copyarea,
++	.fb_imageblit	= cfb_imageblit,
++#endif
++};
++
++static struct aqfb_format aqfb_formats[] = AQFB_FORMATS;
++
++struct aqfb_params {
++	u32 width;
++	u32 height;
++	u32 stride;
++	struct aqfb_format *format;
++};
++
++static int aqfb_parse_dt(struct platform_device *pdev,
++			   struct aqfb_params *params)
++{
++	struct device_node *np = pdev->dev.of_node;
++	int ret;
++	const char *format;
++	int i;
++
++	ret = of_property_read_u32(np, "width", &params->width);
++	if (ret) {
++		printk( "Can't parse width property\n");
++		return ret;
++	}
++
++	ret = of_property_read_u32(np, "height", &params->height);
++	if (ret) {
++		printk( "Can't parse height property\n");
++		return ret;
++	}
++
++	ret = of_property_read_u32(np, "stride", &params->stride);
++	if (ret) {
++		printk( "Can't parse stride property\n");
++		return ret;
++	}
++
++	ret = of_property_read_string(np, "format", &format);
++	if (ret) {
++		printk( "Can't parse format property\n");
++		return ret;
++	}
++	params->format = NULL;
++	for (i = 0; i < ARRAY_SIZE(aqfb_formats); i++) {
++		if (strcmp(format, aqfb_formats[i].name))
++			continue;
++		params->format = &aqfb_formats[i];
++		break;
++	}
++	if (!params->format) {
++		printk( "Invalid format value\n");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int aqfb_parse_pd(struct platform_device *pdev,
++			     struct aqfb_params *params)
++{
++	struct aqfb_platform_data *pd = dev_get_platdata(&pdev->dev);
++	int i;
++
++	params->width = pd->width;
++	params->height = pd->height;
++	params->stride = pd->stride;
++
++	params->format = NULL;
++	for (i = 0; i < ARRAY_SIZE(aqfb_formats); i++) {
++		if (strcmp(pd->format, aqfb_formats[i].name))
++			continue;
++
++		params->format = &aqfb_formats[i];
++		break;
++	}
++
++	if (!params->format) {
++		printk( "Invalid format value\n");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int aqfb_probe(struct platform_device *pdev)
++{
++	int ret;
++	struct aqfb_params params;
++	struct fb_info *info;
++	struct resource *mem;
++  struct device *dev = &pdev->dev;
++  struct aqfb_local *lp = NULL;
++  dev_t devno = 0;
++  int rc = 0;
++
++  char        *fb_phys;
++  dma_addr_t  fb_logi;
++  int         fb_size;
++  
++	if (fb_get_options("aqfb", NULL))
++		return -ENODEV;
++
++	ret = -ENODEV;
++	if (dev_get_platdata(&pdev->dev))
++		ret = aqfb_parse_pd(pdev, &params);
++	else if (pdev->dev.of_node)
++		ret = aqfb_parse_dt(pdev, &params);
++
++	if (ret)
++		return ret;
++
++	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!mem) {
++		printk( "No memory resource\n");
++		return -EINVAL;
++	}
++
++	info = framebuffer_alloc(sizeof(u32) * 16, &pdev->dev);
++	if (!info)
++		return -ENOMEM;
++	platform_set_drvdata(pdev, info);
++
++  // Alloc framebuffer
++  fb_size = params.width * params.height * (params.format->bits_per_pixel / 8);
++#if 1
++  fb_logi = dma_alloc_coherent(dev, PAGE_ALIGN(fb_size), &fb_phys, GFP_KERNEL);
++  printk( "aqfb: Alloc FrameBuffer(Phys,Logi) = %08x:%08x\n", fb_phys, fb_logi);
++#endif
++
++	info->fix             = aqfb_fix;
++	info->fix.smem_start  = (unsigned long)fb_phys;        // 物理アドレス
++	info->fix.smem_len    = fb_size;        // メモリサイズ
++//	info->fix.line_length = params.stride;  // ラインバッファサイズ
++	info->fix.line_length = params.stride;  // ラインバッファサイズ
++
++	info->var                 = aqfb_var;
++	info->var.xres            = params.width;
++	info->var.yres            = params.height;
++	info->var.xres_virtual    = params.width;
++	info->var.yres_virtual    = params.height;
++	info->var.bits_per_pixel  = params.format->bits_per_pixel;
++	info->var.red             = params.format->red;
++	info->var.green           = params.format->green;
++	info->var.blue            = params.format->blue;
++	info->var.transp          = params.format->transp;
++
++	info->apertures = alloc_apertures(1);
++	if (!info->apertures) {
++		framebuffer_release(info);
++		return -ENOMEM;
++	}
++	info->apertures->ranges[0].base = info->fix.smem_start;
++	info->apertures->ranges[0].size = info->fix.smem_len;
++
++	info->fbops = &aqfb_ops;
++	info->flags = FBINFO_DEFAULT | FBINFO_MISC_FIRMWARE;
++#if 0
++	info->screen_base = ioremap_wc(info->fix.smem_start, info->fix.smem_len);  // 論理アドレス
++	if (!info->screen_base) {
++		framebuffer_release(info);
++		return -ENODEV;
++	}
++#else
++	info->screen_base     = (char __iomem *)fb_logi;  // 論理アドレス
++#endif
++	info->pseudo_palette  = (void *)(info + 1);
++	printk( "aqfb: framebuffer at 0x%lx, 0x%x bytes, mapped to 0x%p\n",
++			     info->fix.smem_start, info->fix.smem_len,
++			     info->screen_base);
++	printk( "aqfb: format=%s, mode=%dx%dx%d, linelength=%d\n",
++			     params.format->name,
++			     info->var.xres, info->var.yres,
++			     info->var.bits_per_pixel, info->fix.line_length);
++
++	ret = register_framebuffer(info);
++	if (ret < 0) {
++		printk( "Unable to register aqfb: %d\n", ret);
++		iounmap(info->screen_base);
++		framebuffer_release(info);
++		return ret;
++	}
++
++  lp = (struct aqfb_local *) kmalloc(sizeof(struct aqfb_local), GFP_KERNEL);
++  if (!lp) {
++    dev_err(dev, "Cound not allocate aqfb device\n");
++    return -ENOMEM;
++  }
++        
++  dev_set_drvdata(dev, lp);
++  
++  lp->dev       = dev;
++  lp->mem_start = mem->start;
++  lp->mem_end   = mem->end;
++  
++  if (!request_mem_region(lp->mem_start,
++                          lp->mem_end - lp->mem_start + 1,
++                          DRIVER_NAME)) {
++    dev_err(dev, "Couldn't lock memory region at %p\n",
++            (void *)lp->mem_start);
++    rc = -EBUSY;
++    goto error1;
++  }
++  
++  lp->base_addr = ioremap(lp->mem_start, lp->mem_end - lp->mem_start + 1);
++  if (!lp->base_addr) {
++    dev_err(dev, "aqfb: Could not allocate iomem\n");
++    rc = -EIO;
++    goto error2;
++  }
++
++  cdev_init(&lp->cdev, &aqfb_fops);
++  lp->cdev.owner = THIS_MODULE;
++  rc = cdev_add(&lp->cdev, devno, 1);
++  if(rc)
++    printk(KERN_NOTICE "Error %d adding %s%d", rc, DRIVER_NAME, 0);
++
++  // initialization for char device
++  if(aqfb_major){
++    devno = MKDEV(aqfb_major, aqfb_minor);
++    rc = register_chrdev_region(devno, aqfb_nr_devs, DRIVER_NAME);
++  }else{
++    rc = alloc_chrdev_region(&devno, aqfb_minor, aqfb_nr_devs, DRIVER_NAME);
++    aqfb_major = MAJOR(devno);
++  }
++    
++  /* DMA Setting */
++  printk("aqfb: Reg Start Address = %08X\n", mem->start);
++  iowrite32(fb_phys,    lp->base_addr+RD_ADRS);
++  iowrite32(fb_size,    lp->base_addr+RD_LEN);
++  iowrite32(0xFFFFFFFF, lp->base_addr+RD_START);
++
++	printk( "aqfb: fb%d: aqfb registered!\n", info->node);
++
++	return 0;
++
++error2:
++  release_mem_region(lp->mem_start, lp->mem_end - lp->mem_start + 1);
++error1:
++  kfree(lp);
++  dev_set_drvdata(dev, NULL);
++  printk("axi_vdma: probe failed.\n");
++  return -1;
++}
++
++static int aqfb_remove(struct platform_device *pdev)
++{
++	struct fb_info *info = platform_get_drvdata(pdev);
++
++	unregister_framebuffer(info);
++	framebuffer_release(info);
++
++	return 0;
++}
++
++static const struct of_device_id aqfb_of_match[] = {
++	{ .compatible = "aquaxis,framebuffer", },
++	{ },
++};
++MODULE_DEVICE_TABLE(of, aqfb_of_match);
++
++static struct platform_driver aqfb_driver = {
++	.driver = {
++		.name = "aqfb",
++		.owner = THIS_MODULE,
++		.of_match_table = aqfb_of_match,
++	},
++	.probe = aqfb_probe,
++	.remove = aqfb_remove,
++};
++module_platform_driver(aqfb_driver);
++
++MODULE_AUTHOR("Hidemi Ishihara<hidemi@sweetcafe.jp>");
++MODULE_DESCRIPTION("AQUAXIS Framebuffer Driver");
++MODULE_LICENSE("GPL v2");
+diff --git a/include/linux/platform_data/aqfb.h b/include/linux/platform_data/aqfb.h
+new file mode 100644
+index 0000000..a4704b4
+--- /dev/null
++++ b/include/linux/platform_data/aqfb.h
+@@ -0,0 +1,64 @@
++/*
++ * simplefb.h - Simple Framebuffer Device
++ *
++ * Copyright (C) 2013 David Herrmann <dh.herrmann@gmail.com>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ */
++
++#ifndef __PLATFORM_DATA_AQFB_H__
++#define __PLATFORM_DATA_AQFB_H__
++
++#include <drm/drm_fourcc.h>
++#include <linux/fb.h>
++#include <linux/kernel.h>
++
++/* format array, use it to initialize a "struct simplefb_format" array */
++#define AQFB_FORMATS \
++{ \
++	{ "r5g6b5", 16, {11, 5}, {5, 6}, {0, 5}, {0, 0}, DRM_FORMAT_RGB565 }, \
++	{ "x1r5g5b5", 16, {10, 5}, {5, 5}, {0, 5}, {0, 0}, DRM_FORMAT_XRGB1555 }, \
++	{ "a1r5g5b5", 16, {10, 5}, {5, 5}, {0, 5}, {15, 1}, DRM_FORMAT_ARGB1555 }, \
++	{ "r8g8b8", 24, {16, 8}, {8, 8}, {0, 8}, {0, 0}, DRM_FORMAT_RGB888 }, \
++	{ "x8r8g8b8", 32, {16, 8}, {8, 8}, {0, 8}, {0, 0}, DRM_FORMAT_XRGB8888 }, \
++	{ "a8r8g8b8", 32, {16, 8}, {8, 8}, {0, 8}, {24, 8}, DRM_FORMAT_ARGB8888 }, \
++	{ "a8b8g8r8", 32, {0, 8}, {8, 8}, {16, 8}, {24, 8}, DRM_FORMAT_ABGR8888 }, \
++	{ "x2r10g10b10", 32, {20, 10}, {10, 10}, {0, 10}, {0, 0}, DRM_FORMAT_XRGB2101010 }, \
++	{ "a2r10g10b10", 32, {20, 10}, {10, 10}, {0, 10}, {30, 2}, DRM_FORMAT_ARGB2101010 }, \
++}
++
++/*
++ * Data-Format for Simple-Framebuffers
++ * @name: unique 0-terminated name that can be used to identify the mode
++ * @red,green,blue: Offsets and sizes of the single RGB parts
++ * @transp: Offset and size of the alpha bits. length=0 means no alpha
++ * @fourcc: 32bit DRM four-CC code (see drm_fourcc.h)
++ */
++struct aqfb_format {
++	const char *name;
++	u32 bits_per_pixel;
++	struct fb_bitfield red;
++	struct fb_bitfield green;
++	struct fb_bitfield blue;
++	struct fb_bitfield transp;
++	u32 fourcc;
++};
++
++/*
++ * Simple-Framebuffer description
++ * If the arch-boot code creates simple-framebuffers without DT support, it
++ * can pass the width, height, stride and format via this platform-data object.
++ * The framebuffer location must be given as IORESOURCE_MEM resource.
++ * @format must be a format as described in "struct simplefb_format" above.
++ */
++struct aqfb_platform_data {
++	u32 width;
++	u32 height;
++	u32 stride;
++	const char *format;
++};
++
++#endif
