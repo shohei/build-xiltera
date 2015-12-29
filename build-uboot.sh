@@ -18,6 +18,8 @@ make
 cp spl/u-boot-spl.bin ../build/de1soc.u-boot-spl.bin
 cp u-boot-dtb.img ../build/de1soc.u-boot-dtb.img
 
+make clean
+
 make zynq_zybo_defconfig
 make
 
