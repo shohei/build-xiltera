@@ -1,27 +1,3 @@
-diff --git a/include/configs/socfpga_sockit.h b/include/configs/socfpga_sockit.h
-index 6c71ef4..bccf9a8 100644
---- a/include/configs/socfpga_sockit.h
-+++ b/include/configs/socfpga_sockit.h
-@@ -41,7 +41,7 @@
- #ifdef CONFIG_SOCFPGA_VIRTUAL_TARGET
- #define CONFIG_BOOTCOMMAND	"run ramboot"
- #else
--#define CONFIG_BOOTCOMMAND	"run mmcload; run mmcboot"
-+#define CONFIG_BOOTCOMMAND	"run fpgalaod; run fpgaboot; run mmcload; run mmcboot"
- #endif
- #define CONFIG_LOADADDR		0x01000000
- #define CONFIG_SYS_LOAD_ADDR	CONFIG_LOADADDR
-@@ -73,6 +73,8 @@
- #define CONFIG_HOSTNAME		socfpga_sockit
- 
- #define CONFIG_EXTRA_ENV_SETTINGS \
-+	"fpgaload=load mmc 0 0x1000000 soc_system.rbf\0 " \
-+	"fpgaboot=fpga load 0 0x1000000 $filesize\0 " \
- 	"verify=n\0" \
- 	"loadaddr= " __stringify(CONFIG_SYS_LOAD_ADDR) "\0" \
- 	"ramboot=setenv bootargs " CONFIG_BOOTARGS ";" \
-diff --git a/include/configs/zynq-common.h b/include/configs/zynq-common.h
-index e7ab50a..c3efe1e 100644
 --- a/include/configs/zynq-common.h
 +++ b/include/configs/zynq-common.h
 @@ -158,6 +158,7 @@

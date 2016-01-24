@@ -6,7 +6,7 @@ sudo mkdir -p /tmp/mnt/root
 sudo mount ${1}1 /tmp/mnt/boot
 sudo mount ${1}2 /tmp/mnt/root
 
-sudo dd if=./build/de1soc.u-boot-spl.bin of=${1}3 bs=64k seek=0
+sudo dd if=./build/de1soc.preloader.bin of=${1}3 bs=64k seek=0
 sudo dd if=./build/de1soc.u-boot-dtb.img of=${1}3 bs=64k seek=4
 
 sudo cp ./build/zImage /tmp/mnt/boot
