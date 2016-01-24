@@ -20,6 +20,9 @@ sudo chmod 777 /tmp/mnt/root/etc/init.d/psplash.sh
 sudo echo "ln -s /dev/ttyS0 /dev/ttyPS0" >> /tmp/mnt/root/etc/init.d/psplash.sh
 sudo chmod 755 /tmp/mnt/root/etc/init.d/psplash.sh
 
+sudo cp soc_system.rbf /tmp/mnt/boot
+sudo cp ZYBO_wrapper.bit /tmp/mnt/boot
+
 sync;sync;sync;
 
 sudo umount ${1}?
