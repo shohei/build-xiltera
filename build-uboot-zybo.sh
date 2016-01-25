@@ -7,7 +7,7 @@ source /opt/poky/2.0/environment-setup-cortexa9-vfp-neon-poky-linux-gnueabi
 # u-boot
 git clone git://git.denx.de/u-boot.git u-boot-zybo
 cd u-boot-zybo
-git checkout fbb0c7bd92255bfcb13826a8ac81be6e2f94ba48
+git checkout 5ec0003b19cbdf06ccd6941237cbc0d1c3468e2d
 
 patch -p1 < ../files/u-boot.zybo.diff
 
