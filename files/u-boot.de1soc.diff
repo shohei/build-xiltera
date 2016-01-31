@@ -1178,7 +1178,7 @@ index 37c1476..1b88662 100644
  /* Sequencer auto configuration */
  #define RW_MGR_ACTIVATE_0_AND_1	0x0D
 diff --git a/include/configs/socfpga_sockit.h b/include/configs/socfpga_sockit.h
-index 6c71ef4..a46debd 100644
+index 6c71ef4..6c63493 100644
 --- a/include/configs/socfpga_sockit.h
 +++ b/include/configs/socfpga_sockit.h
 @@ -41,7 +41,7 @@
@@ -1199,3 +1199,12 @@ index 6c71ef4..a46debd 100644
  	"verify=n\0" \
  	"loadaddr= " __stringify(CONFIG_SYS_LOAD_ADDR) "\0" \
  	"ramboot=setenv bootargs " CONFIG_BOOTARGS ";" \
+@@ -84,7 +86,7 @@
+ 	"bootm ${loadaddr} - ${fdt_addr}\0" \
+ 	"mmcroot=/dev/mmcblk0p2\0" \
+ 	"mmcboot=setenv bootargs " CONFIG_BOOTARGS \
+-		" root=${mmcroot} rw rootwait;" \
++		" root=${mmcroot} rw rootwait mem=512m;" \
+ 		"bootz ${loadaddr} - ${fdt_addr}\0" \
+ 	"mmcload=mmc rescan;" \
+ 		"load mmc 0:1 ${loadaddr} ${bootimage};" \
