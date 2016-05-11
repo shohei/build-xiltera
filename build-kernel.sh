@@ -2,12 +2,12 @@
 
 mkdir -p build
 
-source /opt/poky/2.0/environment-setup-cortexa9-vfp-neon-poky-linux-gnueabi
+source /opt/poky/2.0.1/environment-setup-cortexa9-vfp-neon-poky-linux-gnueabi
 
 # Kernel
 git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 cd linux-stable
-git ckechout 31ade3b83e1821da5fbb2f11b5b3d4ab2ec39db8
+git checkout 4.4.7
 
 patch -p1 < ../files/linux-kernel.4.4.diff
 

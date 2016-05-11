@@ -2,7 +2,7 @@
 
 mkdir -p build
 
-source /opt/poky/2.0/environment-setup-cortexa9-vfp-neon-poky-linux-gnueabi
+source /opt/poky/2.0.1/environment-setup-cortexa9-vfp-neon-poky-linux-gnueabi
 
 # u-boot
 git clone git://git.denx.de/u-boot.git u-boot-zybo
