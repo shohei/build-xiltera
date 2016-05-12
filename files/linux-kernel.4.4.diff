@@ -4463,7 +4463,7 @@ index 0000000..027d721
 +  dev_t devno = 0;
 +  int rc = 0;
 +
-+  char        *fb_phys;
++  dma_addr_t *fb_phys;
 +  dma_addr_t  fb_logi;
 +  int         fb_size;
 +  
