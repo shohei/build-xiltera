@@ -4493,7 +4493,7 @@ index 0000000..027d721
 +  // Alloc framebuffer
 +  fb_size = params.width * params.height * (params.format->bits_per_pixel / 8);
 +#if 1
-+  fb_logi = dma_alloc_coherent(dev, PAGE_ALIGN(fb_size), &fb_phys, GFP_KERNEL);
++  fb_logi = dma_alloc_coherent(dev, PAGE_ALIGN(fb_size), fb_phys, GFP_KERNEL);
 +  printk( "aqfb: Alloc FrameBuffer(Phys,Logi) = %08x:%08x\n", fb_phys, fb_logi);
 +#endif
 +
