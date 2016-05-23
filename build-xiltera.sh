@@ -17,6 +17,6 @@ bitbake xiltera-image-dfb
 bitbake xiltera-image-dfb -c populate_sdk
 
 cp ./tmp/deploy/images/xiltera/xiltera-image-dfb-xiltera.tar.bz2 ../../build
-cp ./tmp/deploy/sdk/poky-glibc-x86_64-xiltera-image-dfb-cortexa9-neon-toolchain-2.1.sh ../../build
+cp ./tmp/deploy/sdk/poky-glibc-x86_64-xiltera-image-dfb-cortexa9hf-neon-toolchain-2.1.sh ../../build
 
 cd ../../
