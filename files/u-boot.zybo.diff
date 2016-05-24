@@ -1,18 +1,18 @@
 diff --git a/include/configs/zynq-common.h b/include/configs/zynq-common.h
-index e7ab50a..979be89 100644
+index a3e4aec..da2856f 100644
 --- a/include/configs/zynq-common.h
 +++ b/include/configs/zynq-common.h
-@@ -158,6 +158,7 @@
+@@ -135,6 +135,7 @@
  #endif
  
  #if defined(CONFIG_ZYNQ_SDHCI) || defined(CONFIG_ZYNQ_USB)
 +# define CONFIG_CMD_BOOTZ
  # define CONFIG_SUPPORT_VFAT
- # define CONFIG_CMD_FAT
- # define CONFIG_CMD_EXT2
-@@ -207,30 +208,20 @@
- 
+ # define CONFIG_FAT_WRITE
+ # define CONFIG_DOS_PARTITION
+@@ -189,53 +190,21 @@
  /* Default environment */
+ #ifndef CONFIG_EXTRA_ENV_SETTINGS
  #define CONFIG_EXTRA_ENV_SETTINGS	\
 -	"fit_image=fit.itb\0"		\
 -	"load_addr=0x2000000\0"		\
@@ -21,6 +21,29 @@ index e7ab50a..979be89 100644
 -	"nor_flash_off=0xE2100000\0"	\
 -	"fdt_high=0x20000000\0"		\
 -	"initrd_high=0x20000000\0"	\
+-	"loadbootenv_addr=0x2000000\0" \
+-	"bootenv=uEnv.txt\0" \
+-	"bootenv_dev=mmc\0" \
+-	"loadbootenv=load ${bootenv_dev} 0 ${loadbootenv_addr} ${bootenv}\0" \
+-	"importbootenv=echo Importing environment from ${bootenv_dev} ...; " \
+-		"env import -t ${loadbootenv_addr} $filesize\0" \
+-	"bootenv_existence_test=test -e ${bootenv_dev} 0 /${bootenv}\0" \
+-	"setbootenv=if env run bootenv_existence_test; then " \
+-			"if env run loadbootenv; then " \
+-				"env run importbootenv; " \
+-			"fi; " \
+-		"fi; \0" \
+-	"sd_loadbootenv=set bootenv_dev mmc && " \
+-			"run setbootenv \0" \
+-	"usb_loadbootenv=set bootenv_dev usb && usb start && run setbootenv \0" \
+-	"preboot=if test $modeboot = sdboot; then " \
+-			"run sd_loadbootenv; " \
+-			"echo Checking if uenvcmd is set ...; " \
+-			"if test -n $uenvcmd; then " \
+-				"echo Running uenvcmd ...; " \
+-				"run uenvcmd; " \
+-			"fi; " \
+-		"fi; \0" \
 -	"norboot=echo Copying FIT from NOR flash to RAM... && " \
 -		"cp.b ${nor_flash_off} ${load_addr} ${fit_size} && " \
 -		"bootm ${load_addr}\0" \
@@ -33,8 +56,8 @@ index e7ab50a..979be89 100644
 -	"usbboot=if usb start; then " \
 -			"echo Copying FIT from USB to RAM... && " \
 -			"load usb 0 ${load_addr} ${fit_image} && " \
--			"bootm ${load_addr}\0" \
--		"fi\0" \
+-			"bootm ${load_addr}; fi\0" \
+-		DFU_ALT_INFO
 +  "fpgaload=load mmc 0 0x1000000 ZYBO_wrapper.bit\0 "	\
 +  "fpgaboot=fpga loadb 0 0x1000000 $filesize\0 "		\
 +  "bootimage=zImage\0"									\
@@ -46,7 +69,8 @@ index e7ab50a..979be89 100644
 +  "mmcroot=/dev/mmcblk0p2\0"											\
 +  "mmcboot=setenv bootargs console=ttyPS0,115200 root=${mmcroot} rw rootwait uio_pdrv_genirq.of_id=generic-uio;bootz ${loadaddr} - ${fdtaddr}\0" \
 +  "mmcload=mmc rescan;fatload mmc 0:1 ${loadaddr} ${bootimage};fatload mmc 0:1 ${fdtaddr} ${fdtimage}\0" \
- 		DFU_ALT_INFO
++ 		DFU_ALT_INFO
+ #endif
  
 -#define CONFIG_BOOTCOMMAND		"run $modeboot"
 +#define CONFIG_BOOTCOMMAND		"run fpgaload; run fpgaboot; run mmcload; run mmcboot"
