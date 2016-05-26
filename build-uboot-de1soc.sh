@@ -7,7 +7,7 @@ source /opt/poky/2.1/environment-setup-cortexa9hf-vfp-neon-poky-linux-gnueabi
 # u-boot
 git clone git://git.denx.de/u-boot.git u-boot-de1soc
 cd u-boot-de1soc
-git checkout 5ec0003b19cbdf06ccd6941237cbc0d1c3468e2d
+git checkout v2016.05
 
 patch -p1 < ../files/u-boot.de1soc.diff
 
