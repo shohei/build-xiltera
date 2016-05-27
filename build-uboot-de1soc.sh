@@ -13,7 +13,7 @@ patch -p1 < ../files/u-boot.de1soc.diff
 
 make socfpga_sockit_defconfig
 make
-mkimage -T socfpgaimage -d spl/u-boot-spl-dtb.bin preloader.bin
+./tools/mkimage -T socfpgaimage -d spl/u-boot-spl-dtb.bin preloader.bin
 
 cp preloader.bin ../build/de1soc.preloader.bin
 cp u-boot-dtb.img ../build/de1soc.u-boot-dtb.img
