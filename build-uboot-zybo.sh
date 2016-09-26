@@ -2,7 +2,7 @@
 
 mkdir -p build
 
-source /opt/poky/2.1/environment-setup-cortexa9hf-neon-poky-linux-gnueabi
+source /opt/poky/2.1.1/environment-setup-cortexa9hf-neon-poky-linux-gnueabi
 
 # u-boot
 git clone git://git.denx.de/u-boot.git u-boot-zybo
@@ -21,6 +21,6 @@ make
 ../zynq-boot-bin.py -o boot.bin -u spl/u-boot-spl.bin
 
 cp boot.bin ../build/zybo.boot.bin
-cp u-boot.img ../build/zybo.u-boot.img
+cp u-boot-dtb.img ../build/zybo.u-boot-dtb.img
 
 cd ..

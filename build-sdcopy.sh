@@ -12,7 +12,7 @@ sudo dd if=./build/de1soc.u-boot-dtb.img of=${1}3 bs=64k seek=4
 sudo cp ./build/zImage /tmp/mnt/boot
 sudo cp ./build/socfpga.dtb /tmp/mnt/boot
 sudo cp ./build/zynq-zybo.dtb /tmp/mnt/boot
-sudo cp ./build/zybo.u-boot.img /tmp/mnt/boot/u-boot.img
+sudo cp ./build/zybo.u-boot-dtb.img /tmp/mnt/boot/u-boot-dtb.img
 sudo cp ./build/zybo.boot.bin /tmp/mnt/boot/boot.bin
 
 sudo tar xjvf ./build/xiltera-image-dfb-xiltera.tar.bz2 -C /tmp/mnt/root
@@ -28,4 +28,3 @@ sync;sync;sync;
 sudo umount ${1}?
 
 sudo rm -rf /tmp/mnt
-
