@@ -1,8 +1,8 @@
 diff --git a/include/configs/zynq-common.h b/include/configs/zynq-common.h
-index a3e4aec..da2856f 100644
+index f1c9bed..73119d1 100644
 --- a/include/configs/zynq-common.h
 +++ b/include/configs/zynq-common.h
-@@ -135,6 +135,7 @@
+@@ -127,6 +127,7 @@
  #endif
  
  #if defined(CONFIG_ZYNQ_SDHCI) || defined(CONFIG_ZYNQ_USB)
@@ -10,7 +10,7 @@ index a3e4aec..da2856f 100644
  # define CONFIG_SUPPORT_VFAT
  # define CONFIG_FAT_WRITE
  # define CONFIG_DOS_PARTITION
-@@ -189,53 +190,21 @@
+@@ -181,53 +182,21 @@
  /* Default environment */
  #ifndef CONFIG_EXTRA_ENV_SETTINGS
  #define CONFIG_EXTRA_ENV_SETTINGS	\
@@ -57,7 +57,6 @@ index a3e4aec..da2856f 100644
 -			"echo Copying FIT from USB to RAM... && " \
 -			"load usb 0 ${load_addr} ${fit_image} && " \
 -			"bootm ${load_addr}; fi\0" \
--		DFU_ALT_INFO
 +  "fpgaload=load mmc 0 0x1000000 ZYBO_wrapper.bit\0 "	\
 +  "fpgaboot=fpga loadb 0 0x1000000 $filesize\0 "		\
 +  "bootimage=zImage\0"									\
@@ -69,11 +68,11 @@ index a3e4aec..da2856f 100644
 +  "mmcroot=/dev/mmcblk0p2\0"											\
 +  "mmcboot=setenv bootargs console=ttyPS0,115200 root=${mmcroot} rw rootwait uio_pdrv_genirq.of_id=generic-uio;bootz ${loadaddr} - ${fdtaddr}\0" \
 +  "mmcload=mmc rescan;fatload mmc 0:1 ${loadaddr} ${bootimage};fatload mmc 0:1 ${fdtaddr} ${fdtimage}\0" \
-+ 		DFU_ALT_INFO
+ 		DFU_ALT_INFO
  #endif
  
 -#define CONFIG_BOOTCOMMAND		"run $modeboot"
 +#define CONFIG_BOOTCOMMAND		"run fpgaload; run fpgaboot; run mmcload; run mmcboot"
- #define CONFIG_BOOTDELAY		3 /* -1 to Disable autoboot */
  #define CONFIG_SYS_LOAD_ADDR		0 /* default? */
  
+ /* Miscellaneous configurable options */
